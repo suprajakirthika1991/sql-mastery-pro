@@ -1,0 +1,112 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+
+// ---------- auth (NextAuth) ----------
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  xp            Int       @default(0)
+  streak        Int       @default(1)
+  lastVisit     DateTime?
+  lessonProgress  LessonProgress[]
+  submissions     ChallengeSubmission[]
+  quizAttempts    QuizAttempt[]
+}
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ---------- content ----------
+model Lesson {
+  id        String  @id @default(cuid())
+  slug      String  @unique
+  title     String
+  level     String  // easy | medium | hard
+  minutes   Int
+  order     Int
+  why       String
+  analogy   String
+  body      String  // sanitised HTML / MDX
+  sql       String
+  mistakes  String[] 
+  takeaways String[]
+  progress  LessonProgress[]
+}
+model Challenge {
+  id        String  @id @default(cuid())
+  slug      String  @unique
+  title     String
+  level     String
+  xp        Int
+  ordered   Boolean @default(false)
+  prompt    String
+  tables    String[]
+  hints     String[]
+  solution  String
+  submissions ChallengeSubmission[]
+}
+model QuizQuestion {
+  id          String @id @default(cuid())
+  category    String
+  difficulty  String
+  question    String
+  options     String[]
+  answerIndex Int
+  explanation String
+}
+
+// ---------- activity ----------
+model LessonProgress {
+  userId    String
+  lessonId  String
+  completedAt DateTime @default(now())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  @@id([userId, lessonId])
+}
+model ChallengeSubmission {
+  id          String   @id @default(cuid())
+  userId      String
+  challengeId String
+  sql         String
+  correct     Boolean
+  createdAt   DateTime @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  @@index([userId, challengeId])
+}
+model QuizAttempt {
+  id        String   @id @default(cuid())
+  userId    String
+  category  String
+  total     Int
+  correct   Int
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
