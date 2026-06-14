@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXTAUTH_SECRET: "ci-placeholder-secret"
+      ANTHROPIC_API_KEY: "ci-placeholder"
 
     steps:
       - name: Checkout
@@ -38,8 +42,3 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
-          NEXTAUTH_URL: "http://localhost:3000"
-          NEXTAUTH_SECRET: "ci-placeholder-secret"
-          ANTHROPIC_API_KEY: "ci-placeholder"
