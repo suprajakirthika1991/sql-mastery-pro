@@ -2,6 +2,8 @@
 
 # 🛢️ SQL Mastery Pro
 
+![CI](https://github.com/suprajakirthika1991/sql-mastery-pro/actions/workflows/ci.yml/badge.svg)
+
 **Learn SQL from your first `SELECT` to interview-ready window functions.**
 
 An interactive SQL learning platform: structured lessons, a browser-based SQLite playground, auto-graded coding challenges, an interview-style quiz bank, gamified progress, and an AI tutor.
