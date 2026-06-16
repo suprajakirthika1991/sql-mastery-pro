@@ -133,8 +133,4 @@ src/
 
 ## 🤝 Contributing
 
-Issues and PRs welcome. Please run `npm run lint && npm test` before opening a PR — the CI workflow runs the same checks.
-
-## 📄 License
-
-[MIT](./LICENSE)
+Issues and PRs welcome. Please run `npm run lint && npm test`

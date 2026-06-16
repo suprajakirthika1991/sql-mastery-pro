@@ -1,3 +1,7 @@
+// Copyright © 2026 Supraja Kali Vaidyanathan. All rights reserved.
+// You may use, run, and share this software, but you may not modify,
+// sublicense, or use it for commercial purposes without written permission.
+
 export const XP = { lesson: 50, quizCorrect: 10, challenge: { easy: 60, medium: 100, hard: 150 } };
 export const level = (xp: number) => Math.floor(xp / 250) + 1;
 
